@@ -1,10 +1,80 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import "./Auth.scss";
+import AuthContext from "../context/auth-context";
 
 function Auth() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginMode, setLoginMode] = useState(true);
+  const context = useContext(AuthContext);
+
+  const submitHandler = e => {
+    e.preventDefault();
+    if (email.trim().length === 0 || password.trim().length === 0) {
+      return;
+    }
+    let requestBody = {
+      query: `
+        query {
+          login(email: "${email}", password: "${password}"){
+            userId
+            token
+            tokenExpiration
+          }
+        }
+      `
+    };
+
+    if (!loginMode) {
+      requestBody = {
+        query: `
+        mutation {
+          createUser(userInput: {email: "${email}", password: "${password}"}){
+            _id
+            email
+          }
+        }`
+      };
+    }
+    axios
+      .post("http://localhost:4000/graphql", requestBody)
+      .then(data => {
+        console.log(data);
+        const token = data.data.data.login.token;
+        const userId = data.data.data.login.userId;
+        const tokenExpiration = data.data.data.login.tokenExpiration;
+        if (token) {
+          context.login(token, userId, tokenExpiration);
+        }
+      })
+      .catch(err => console.log(err));
+  };
   return (
-    <div>
-      <h1>Auth Page</h1>
-    </div>
+    <form className="auth-form" onSubmit={submitHandler}>
+      <div className="form-control">
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          onChange={e => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="form-control">
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          onChange={e => setPassword(e.target.value)}
+        />
+      </div>
+      <div className="form-actions">
+        <button type="submit">Submit</button>
+        <button type="button" onClick={() => setLoginMode(!loginMode)}>
+          {loginMode ? "Register" : "Login"}
+        </button>
+      </div>
+    </form>
   );
 }
 
