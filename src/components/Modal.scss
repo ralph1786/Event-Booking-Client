@@ -1,0 +1,54 @@
+@import "../utilities/_variables.scss";
+
+.modal {
+  width: 90%;
+  background: white;
+  box-shadow: 0 2px 8px rgba($color: #000000, $alpha: 0.3);
+  position: fixed;
+  top: 20vh;
+  left: 5%;
+  z-index: 100;
+
+  .modal__header {
+    padding: 1rem;
+    background: $primary-color;
+    color: white;
+
+    h1 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+  }
+
+  .modal__content {
+    padding: 1rem;
+  }
+
+  .modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+    button {
+      background: $button-color;
+      border: 1px solid $button-color;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      margin-right: 1rem;
+      color: white;
+      box-shadow: 3px 3px 5px rgba($color: #000000, $alpha: 0.26);
+      cursor: pointer;
+
+      &:hover,
+      &:active {
+        background: darken($color: $button-color, $amount: 20);
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .modal {
+    width: 30rem;
+    left: calc((100% - 30rem) / 2);
+  }
+}
