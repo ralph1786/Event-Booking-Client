@@ -1,0 +1,23 @@
+@import "../utilities/_variables.scss";
+
+.bookings__tabs {
+  text-align: center;
+  padding: 0.5rem;
+  button {
+    font: inherit;
+    border: none;
+    background: lighten($color: $primary-color, $amount: 23);
+    color: black;
+    padding: 0.5rem 3rem;
+    margin: 0.15rem;
+    cursor: pointer;
+    &.active {
+      background: darken($color: $primary-color, $amount: 20);
+      color: white;
+    }
+
+    &:focus {
+      outline-color: darken($color: $primary-color, $amount: 30);
+    }
+  }
+}
