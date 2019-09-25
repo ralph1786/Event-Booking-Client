@@ -23,6 +23,7 @@ function Events() {
   //refs
   const titleRef = useRef("");
   const priceRef = useRef(0);
+  const posterRef = useRef("");
   const dateRef = useRef("");
   const descriptionRef = useRef("");
 
@@ -45,6 +46,7 @@ function Events() {
             description
             date
             price
+            poster
             creator {
               _id
               email
@@ -74,12 +76,14 @@ function Events() {
   const createEvent = () => {
     setIsModalOpen(false);
     const title = titleRef.current.value;
+    const poster = posterRef.current.value;
     const price = +priceRef.current.value; //the + sign turns it into a number
     const date = dateRef.current.value;
     const description = descriptionRef.current.value;
 
     if (
       title.trim().length === 0 ||
+      poster.trim().length === 0 ||
       price <= 0 ||
       date.trim().length === 0 ||
       description.trim().length === 0
@@ -88,13 +92,14 @@ function Events() {
     }
     const requestBody = {
       query: `
-        mutation CreateEvent($title: String!, $description: String!, $price: Float!, $date: String!) {
-          createEvent(eventInput: {title: $title, description: $description, price: $price, date: $date}){
+        mutation CreateEvent($title: String!, $description: String!, $price: Float!, $poster: String!, $date: String!) {
+          createEvent(eventInput: {title: $title, description: $description, price: $price, poster: $poster, date: $date}){
             _id
             title
             description
             date
             price
+            poster
             creator {
               _id
             }
@@ -103,6 +108,7 @@ function Events() {
       variables: {
         title: title,
         description: description,
+        poster: poster,
         price: price,
         date: date
       }
@@ -185,6 +191,10 @@ function Events() {
             <div className="form-control">
               <label htmlFor="price">Price</label>
               <input type="number" id="price" ref={priceRef} />
+            </div>
+            <div className="form-control">
+              <label htmlFor="poster">Poster</label>
+              <input type="text" id="poster" ref={posterRef} />
             </div>
             <div className="form-control">
               <label htmlFor="date">Date</label>
