@@ -16,8 +16,6 @@ function App() {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
 
-  // const storageToken = localStorage.getItem("token");
-
   const login = (token, userId, tokenExpiration) => {
     setToken(token);
     setUserId(userId);
@@ -48,18 +46,16 @@ function App() {
               {token && (
                 <Route path="/bookings" render={() => <BookingsPage />} />
               )} */}
-              <Route path="/auth" exact render={() => <AuthPage />} />
               <Route
                 path="/auth"
                 render={() =>
                   localStorage.getItem("token") ? (
-                    <Redirect to="/events" />
+                    <Redirect from="/auth" to="/events" />
                   ) : (
                     <AuthPage />
                   )
                 }
               />
-              <Route path="/events" render={() => <EventsPage />} />
               <Route
                 path="/bookings"
                 render={() =>
@@ -70,6 +66,8 @@ function App() {
                   )
                 }
               />
+              <Route path="/events" render={() => <EventsPage />} />
+              <Route path="/auth" exact render={() => <AuthPage />} />
             </Switch>
           </main>
         </AuthContext.Provider>
