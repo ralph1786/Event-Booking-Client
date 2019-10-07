@@ -3,11 +3,15 @@
 .event__list__item {
   margin: 1rem 0;
   padding: 1rem;
-  border: 1px solid $primary-color;
   list-style: none;
+  width: 400px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  -webkit-box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
+  -moz-box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
+  box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
+  background-color: lighten($color: $primary-color, $amount: 32);
 
   h2 {
     margin: 0;
@@ -19,15 +23,23 @@
     font-size: 1rem;
     color: rgb(85, 83, 83);
   }
+
+  img {
+    width: 300px;
+    height: 275px;
+  }
+
   button {
     background: $button-color;
     border: 1px solid $button-color;
     border-radius: 5px;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
     margin-right: 1rem;
     color: white;
     box-shadow: 3px 3px 5px rgba($color: #000000, $alpha: 0.26);
     cursor: pointer;
+    position: relative;
+    top: 9rem;
 
     &:hover,
     &:active {
