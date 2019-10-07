@@ -3,7 +3,12 @@
 .auth-form {
   width: 20rem;
   max-width: 80%;
-  margin: 10rem auto;
+  margin: 15rem auto;
+  padding: 3rem;
+  -webkit-box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
+  -moz-box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
+  box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
+  background-color: lighten($color: $primary-color, $amount: 31);
 
   .form-control {
     margin-bottom: 1rem;
@@ -11,6 +16,13 @@
     input {
       width: 100%;
       display: block;
+    }
+    label {
+      font-size: 1.3rem;
+    }
+    input {
+      height: 1.3rem;
+      font-size: 1.1rem;
     }
   }
   .form-actions {
