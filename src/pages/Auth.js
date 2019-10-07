@@ -1,13 +1,16 @@
 import React, { useState, useContext } from "react";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 import "./Auth.scss";
 import AuthContext from "../context/auth-context";
 
-function Auth() {
+function Auth(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginMode, setLoginMode] = useState(true);
   const context = useContext(AuthContext);
+
+  // console.log(props);
 
   const submitHandler = e => {
     e.preventDefault();
@@ -54,6 +57,7 @@ function Auth() {
         const tokenExpiration = data.data.data.login.tokenExpiration;
         if (token) {
           context.login(token, userId, tokenExpiration);
+          props.history.push("/events");
         }
       })
       .catch(err => console.log(err));
@@ -77,7 +81,7 @@ function Auth() {
         />
       </div>
       <div className="form-actions">
-        <button type="submit">Submit</button>
+        <button type="submit">{loginMode ? "Login" : "Register"}</button>
         <button type="button" onClick={() => setLoginMode(!loginMode)}>
           {loginMode ? "Register" : "Login"}
         </button>
@@ -86,4 +90,4 @@ function Auth() {
   );
 }
 
-export default Auth;
+export default withRouter(Auth);
