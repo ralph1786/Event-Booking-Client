@@ -1,32 +1,28 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import "./Auth.scss";
 import AuthContext from "../context/auth-context";
+import { LOGIN_USER } from "../graphql/queries/index";
+import { CREATE_USER } from "../graphql/mutations/index";
 
 function Auth(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginMode, setLoginMode] = useState(true);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("success");
   const context = useContext(AuthContext);
-
-  // console.log(props);
 
   const submitHandler = e => {
     e.preventDefault();
     if (email.trim().length === 0 || password.trim().length === 0) {
+      setMessageType("error");
+      setMessage("All fields are required!");
       return;
     }
     let requestBody = {
-      query: `
-        query LoginUser($email: String!, $password: String!){
-          login(email: $email, password: $password){
-            userId
-            token
-            tokenExpiration
-          }
-        }
-      `,
+      query: LOGIN_USER,
       variables: {
         email: email,
         password: password
@@ -35,13 +31,7 @@ function Auth(props) {
 
     if (!loginMode) {
       requestBody = {
-        query: `
-        mutation CreateUser($email: String!, $password: String!) {
-          createUser(userInput: {email: $email, password: $password}){
-            _id
-            email
-          }
-        }`,
+        query: CREATE_USER,
         variables: {
           email: email,
           password: password
@@ -51,6 +41,21 @@ function Auth(props) {
     axios
       .post("http://localhost:4000/graphql", requestBody)
       .then(data => {
+        const errors = data.data.errors;
+        if (errors) {
+          setMessage(errors[0].message);
+          setEmail("");
+          setPassword("");
+          setMessageType("error");
+          return;
+        }
+        if (data.data.data.createUser) {
+          setMessage("Registered successfully, please login.");
+          setEmail("");
+          setPassword("");
+          setLoginMode(true);
+          return;
+        }
         console.log(data);
         const token = data.data.data.login.token;
         const userId = data.data.data.login.userId;
@@ -62,31 +67,53 @@ function Auth(props) {
       })
       .catch(err => console.log(err));
   };
+
+  const changeToLoginClearErrorMessage = () => {
+    setMessage("");
+    setLoginMode(!loginMode);
+  };
+
   return (
-    <form className="auth-form" onSubmit={submitHandler}>
-      <div className="form-control">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          onChange={e => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="form-control">
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          onChange={e => setPassword(e.target.value)}
-        />
-      </div>
-      <div className="form-actions">
-        <button type="submit">{loginMode ? "Login" : "Register"}</button>
-        <button type="button" onClick={() => setLoginMode(!loginMode)}>
-          {loginMode ? "Register" : "Login"}
-        </button>
-      </div>
-    </form>
+    <Fragment>
+      {message ? (
+        <span
+          className={
+            messageType === "success" ? "success_message" : "error_message"
+          }
+        >
+          {message}
+        </span>
+      ) : null}
+      <form className="auth-form" onSubmit={submitHandler}>
+        <div className="form-control">
+          <label htmlFor="email">Email</label>
+          <input
+            value={email}
+            type="email"
+            id="email"
+            onChange={e => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="password">Password</label>
+          <input
+            value={password}
+            type="password"
+            id="password"
+            onChange={e => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="form-actions">
+          <button type="submit">{loginMode ? "Login" : "Register"}</button>
+          <button
+            type="button"
+            onClick={() => changeToLoginClearErrorMessage()}
+          >
+            {loginMode ? "Register" : "Login"}
+          </button>
+        </div>
+      </form>
+    </Fragment>
   );
 }
 
