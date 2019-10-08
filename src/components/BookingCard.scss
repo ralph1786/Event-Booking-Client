@@ -1,27 +1,18 @@
 @import "../utilities/variables.scss";
+@import "../utilities/mixins.scss";
 
 .bookings__item {
-  list-style-type: none;
-  padding: 0.5rem;
-  border: 1px solid $primary-color;
-  margin: 0.5rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @include card;
 
   button {
-    background: $button-color;
-    border: 1px solid $button-color;
-    border-radius: 5px;
-    padding: 0.5rem 1rem;
-    margin-right: 1rem;
-    color: white;
-    box-shadow: 3px 3px 5px rgba($color: #000000, $alpha: 0.26);
-    cursor: pointer;
+    @include button;
+    position: relative;
+    top: 9rem;
+    padding: 0.5rem;
+  }
 
-    &:hover,
-    &:active {
-      background: darken($color: $button-color, $amount: 20);
-    }
+  img {
+    width: 200px;
+    height: 200px;
   }
 }
