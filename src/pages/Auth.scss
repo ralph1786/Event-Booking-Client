@@ -1,4 +1,43 @@
 @import "../utilities/_variables";
+@import "../utilities/_mixins";
+
+@keyframes FadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+  25% {
+    opacity: 0.25;
+    transform: translateY(-15%);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-10%);
+  }
+  75% {
+    opacity: 0.75;
+    transform: translateY(-5%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+@mixin message {
+  display: flex;
+  margin: 10rem auto;
+  justify-content: center;
+  width: 20%;
+  margin-bottom: -10rem;
+  font-size: 1.2rem;
+  background: rgb(236, 56, 56);
+  color: white;
+  padding: 0.7rem;
+  border-radius: 25px;
+  animation: FadeIn 1s ease-in;
+  animation-fill-mode: both;
+}
 
 .auth-form {
   width: 20rem;
@@ -27,19 +66,16 @@
   }
   .form-actions {
     button {
-      background: $button-color;
-      border: 1px solid $button-color;
-      border-radius: 5px;
-      padding: 0.5rem 1rem;
-      margin-right: 1rem;
-      color: white;
-      box-shadow: 3px 3px 5px rgba($color: #000000, $alpha: 0.26);
-      cursor: pointer;
-
-      &:hover,
-      &:active {
-        background: darken($color: $button-color, $amount: 20);
-      }
+      @include button;
     }
   }
+}
+
+.error_message {
+  @include message;
+}
+
+.success_message {
+  @include message;
+  background: rgb(55, 206, 55);
 }
