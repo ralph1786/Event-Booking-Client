@@ -8,14 +8,14 @@ export default function EventCard(props) {
       <div>
         <img src={poster} alt={`${title} poster`} />
         <h2>{title}</h2>
-        <h4>${price}</h4>
+        <h4>Price: ${price}</h4>
         <h4>Date: {new Date(date).toLocaleDateString()}</h4>
       </div>
       <div>
         {props.userId === props.creatorId ? (
           <p>Your Event</p>
         ) : (
-          <button onClick={() => props.onDetail(_id)}>More Details</button>
+          <button onClick={() => props.onDetail(_id)}>Details</button>
         )}
       </div>
     </li>
