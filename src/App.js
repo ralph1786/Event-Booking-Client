@@ -21,6 +21,7 @@ function App() {
     setToken(token);
     setUserId(userId);
     localStorage.setItem("token", token);
+    localStorage.setItem("userId", userId);
   };
 
   const logout = () => {
@@ -31,6 +32,7 @@ function App() {
 
   useEffect(() => {
     setToken(localStorage.getItem("token"));
+    setUserId(localStorage.getItem("userId"));
   }, []);
 
   return (
