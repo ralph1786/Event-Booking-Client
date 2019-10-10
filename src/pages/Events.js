@@ -12,6 +12,12 @@ import EventList from "../containers/EventList";
 import axios from "axios";
 import AuthContext from "../context/auth-context";
 import Spinner from "../components/UX/Spinner";
+import { GET_ALL_EVENTS } from "../graphql/queries/index";
+import {
+  CREATE_EVENT,
+  BOOK_EVENT,
+  DELETE_EVENT
+} from "../graphql/mutations/index";
 
 function Events() {
   //state
@@ -19,6 +25,7 @@ function Events() {
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   //refs
   const titleRef = useRef("");
@@ -33,33 +40,19 @@ function Events() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedEvent(null);
+    setErrorMessage("");
   };
 
   const fetchEvents = () => {
     setIsLoading(true);
     const requestBody = {
-      query: `
-        query {
-          events{
-            _id
-            title
-            description
-            date
-            price
-            poster
-            creator {
-              _id
-              email
-            }
-          }
-        }`
+      query: GET_ALL_EVENTS
     };
 
     axios
       .post("http://localhost:4000/graphql", requestBody)
       .then(data => {
         setIsLoading(false);
-        console.log(data);
         const listOfEvents = data.data.data.events;
         setEvents(listOfEvents);
       })
@@ -74,7 +67,6 @@ function Events() {
   }, []);
 
   const createEvent = () => {
-    setIsModalOpen(false);
     const title = titleRef.current.value;
     const poster = posterRef.current.value;
     const price = +priceRef.current.value; //the + sign turns it into a number
@@ -88,23 +80,12 @@ function Events() {
       date.trim().length === 0 ||
       description.trim().length === 0
     ) {
+      setErrorMessage("All Fields Required!");
       return;
     }
+    setIsModalOpen(false);
     const requestBody = {
-      query: `
-        mutation CreateEvent($title: String!, $description: String!, $price: Float!, $poster: String!, $date: String!) {
-          createEvent(eventInput: {title: $title, description: $description, price: $price, poster: $poster, date: $date}){
-            _id
-            title
-            description
-            date
-            price
-            poster
-            creator {
-              _id
-            }
-          }
-        }`,
+      query: CREATE_EVENT,
       variables: {
         title: title,
         description: description,
@@ -121,9 +102,7 @@ function Events() {
         }
       })
       .then(data => {
-        // console.log(data);
         const createdEvent = data.data.data.createEvent;
-        // console.log(createdEvent);
         setEvents([...events, createdEvent]);
       })
       .catch(err => console.log(err));
@@ -141,14 +120,7 @@ function Events() {
     }
     setIsLoading(true);
     const requestBody = {
-      query: `
-        mutation BookEvent($id: ID!){
-          bookEvent (eventId: $id){
-            _id
-            createdAt
-            updatedAt
-          }
-        }`,
+      query: BOOK_EVENT,
       variables: {
         id: selectedEvent._id
       }
@@ -161,7 +133,6 @@ function Events() {
         }
       })
       .then(data => {
-        console.log(data);
         setIsLoading(false);
         setSelectedEvent(null);
       })
@@ -171,9 +142,32 @@ function Events() {
       });
   };
 
+  const deleteEvent = async eventId => {
+    const requestBody = {
+      query: DELETE_EVENT,
+      variables: {
+        id: eventId
+      }
+    };
+
+    try {
+      await axios.post("http://localhost:4000/graphql", requestBody, {
+        headers: {
+          Authorization: `Bearer ${context.token}`
+        }
+      });
+      const filteredEvents = events.filter(event => event._id !== eventId);
+      setEvents(filteredEvents);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Fragment>
-      {(isModalOpen || selectedEvent) && <Backdrop />}
+      {(isModalOpen || selectedEvent) && (
+        <Backdrop closeModal={closeModal} errorMessage={errorMessage} />
+      )}
       {isModalOpen && (
         <Modal
           title="Add Event"
@@ -186,7 +180,7 @@ function Events() {
           <form>
             <div className="form-control">
               <label htmlFor="title">Title</label>
-              <input type="text" id="title" ref={titleRef} />
+              <input type="text" id="title" ref={titleRef} autoFocus />
             </div>
             <div className="form-control">
               <label htmlFor="price">Price</label>
@@ -204,8 +198,8 @@ function Events() {
               <label htmlFor="description">Description</label>
               <textarea
                 id="description"
-                cols="30"
-                rows="10"
+                cols="25"
+                rows="7"
                 ref={descriptionRef}
               ></textarea>
             </div>
@@ -222,7 +216,7 @@ function Events() {
           confirmText="Book"
         >
           <h2>{selectedEvent.title}</h2>
-          <h4>${selectedEvent.price}</h4>
+          <h4>Price: ${selectedEvent.price}</h4>
           <h4>Date: {new Date(selectedEvent.date).toLocaleDateString()}</h4>
           <p>{selectedEvent.description}</p>
         </Modal>
@@ -230,7 +224,7 @@ function Events() {
 
       {context.token && (
         <div className="create-event">
-          <p>Add new events to our platform!</p>
+          <h2>Add new events to our platform!</h2>
           <button
             className="create-event__btn"
             onClick={() => setIsModalOpen(true)}
@@ -246,6 +240,7 @@ function Events() {
           events={events}
           authUserId={context.userId}
           onViewDetail={showEventDetails}
+          deleteEvent={deleteEvent}
         />
       )}
     </Fragment>
