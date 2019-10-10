@@ -2,7 +2,7 @@
   margin: 1rem 0;
   padding: 1rem;
   list-style: none;
-  width: 400px;
+  width: 375px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -27,4 +27,19 @@
   &:active {
     background: darken($color: $button-color, $amount: 20);
   }
+}
+
+@mixin message {
+  display: flex;
+  margin: 10rem auto;
+  justify-content: center;
+  width: 20%;
+  margin-bottom: -10rem;
+  font-size: 1.2rem;
+  background: rgb(236, 56, 56);
+  color: white;
+  padding: 0.7rem;
+  border-radius: 25px;
+  animation: FadeIn 1s ease-in;
+  animation-fill-mode: both;
 }
