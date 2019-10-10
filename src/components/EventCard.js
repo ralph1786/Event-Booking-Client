@@ -13,7 +13,12 @@ export default function EventCard(props) {
       </div>
       <div>
         {props.userId === props.creatorId ? (
-          <p>Your Event</p>
+          <button
+            onClick={() => props.deleteEvent(_id)}
+            className="button__delete"
+          >
+            Delete
+          </button>
         ) : (
           <button onClick={() => props.onDetail(_id)}>Details</button>
         )}
