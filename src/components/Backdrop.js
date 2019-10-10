@@ -1,8 +1,12 @@
 import React from "react";
 import "./Backdrop.scss";
 
-function Backdrop() {
-  return <div className="backdrop"></div>;
+function Backdrop({ closeModal, errorMessage }) {
+  return (
+    <div onClick={() => closeModal(false)} className="backdrop">
+      {errorMessage ? <p>{errorMessage}</p> : ""}
+    </div>
+  );
 }
 
 export default Backdrop;
