@@ -30,6 +30,14 @@ export const CREATE_EVENT = `
           }
         }`;
 
+export const DELETE_EVENT = `
+        mutation DeleteEvent($id: ID!){
+          deleteEvent(eventId: $id){
+            title
+          }
+        }
+`;
+
 export const BOOK_EVENT = `
         mutation BookEvent($id: ID!){
           bookEvent (eventId: $id){
