@@ -9,9 +9,9 @@ function Modal(props) {
       </header>
       <section className="modal__content">{props.children}</section>
       <section className="modal__actions">
-        {props.canConfirm && (
+        {props.canConfirm && localStorage.getItem("token") ? (
           <button onClick={props.onConfirm}>{props.confirmText}</button>
-        )}
+        ) : null}
         {props.canCancel && <button onClick={props.onCancel}>Cancel</button>}
       </section>
     </div>
