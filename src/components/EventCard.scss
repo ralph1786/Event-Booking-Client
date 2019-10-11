@@ -27,6 +27,18 @@
     padding: 0.5rem;
   }
 
+  .button__delete {
+    @include button;
+    position: relative;
+    top: 9rem;
+    padding: 0.5rem;
+    background: darken($color: $button-color, $amount: 25);
+
+    &:hover {
+      background: darken($color: $button-color, $amount: 17);
+    }
+  }
+
   p {
     margin: 0;
   }
