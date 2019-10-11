@@ -24,21 +24,6 @@
   }
 }
 
-@mixin message {
-  display: flex;
-  margin: 10rem auto;
-  justify-content: center;
-  width: 20%;
-  margin-bottom: -10rem;
-  font-size: 1.2rem;
-  background: rgb(236, 56, 56);
-  color: white;
-  padding: 0.7rem;
-  border-radius: 25px;
-  animation: FadeIn 1s ease-in;
-  animation-fill-mode: both;
-}
-
 .auth-form {
   width: 20rem;
   max-width: 80%;
