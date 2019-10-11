@@ -5,6 +5,8 @@ import Spinner from "../components/UX/Spinner";
 import BookingList from "../containers/BookingList";
 import BookingChart from "../containers/BookingChart";
 import BookingTabs from "../components/BookingTabs";
+import { GET_BOOKINGS } from "../graphql/queries/index";
+import { CANCEL_BOOKING } from "../graphql/mutations/index";
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
@@ -15,20 +17,7 @@ function Bookings() {
   const retrieveBookings = () => {
     setIsLoading(true);
     const requestBody = {
-      query: `
-        query {
-          bookings{
-            _id
-            createdAt
-            event{
-              _id
-              title
-              date
-              description
-              price
-            }
-          }
-        }`
+      query: GET_BOOKINGS
     };
 
     axios
@@ -41,7 +30,7 @@ function Bookings() {
         setIsLoading(false);
         const listOfBookings = data.data.data.bookings;
         setBookings(listOfBookings);
-        console.log(data);
+        // console.log(data);
       })
       .catch(err => {
         console.log(err);
@@ -51,20 +40,13 @@ function Bookings() {
 
   useEffect(() => {
     retrieveBookings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const cancelBooking = bookingId => {
-    console.log(bookingId);
     setIsLoading(true);
     const requestBody = {
-      query: `
-        mutation CancelBooking($id: ID!) {
-          cancelBooking(bookingId: $id){
-              _id
-              title
-            }
-          }
-        `,
+      query: CANCEL_BOOKING,
       variables: {
         id: bookingId
       }
@@ -81,7 +63,7 @@ function Bookings() {
           return booking._id !== bookingId;
         });
         setBookings(filteredBookings);
-        console.log(data);
+        // console.log(data);
       })
       .catch(err => {
         console.log(err);
@@ -95,6 +77,11 @@ function Bookings() {
     content = (
       <Fragment>
         <BookingTabs tabChange={setOutput} activeTab={output} />
+        {bookings.length === 0 ? (
+          <h2 style={{ margin: "4rem auto", textAlign: "center" }}>
+            Currently you have not booked an event.
+          </h2>
+        ) : null}
         <div>
           {output === "List" ? (
             <BookingList bookings={bookings} cancelBooking={cancelBooking} />
