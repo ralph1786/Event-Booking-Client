@@ -12,6 +12,7 @@ function EventList(props) {
       userId={authUserId}
       creatorId={event.creator._id}
       onDetail={props.onViewDetail}
+      deleteEvent={props.deleteEvent}
     />
   ));
   return (
