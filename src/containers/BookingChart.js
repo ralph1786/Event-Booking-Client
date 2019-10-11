@@ -2,15 +2,15 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 
 const BOOKINGS_PRICE_BREAKDOWN = {
-  "Lowest-Tier": {
+  "Lowest-Tier-Event": {
     min: 0,
     max: 50
   },
-  "Mid-Tier": {
+  "Mid-Tier-Event": {
     min: 50,
     max: 150
   },
-  "Upper-Tier": {
+  "Upper-Tier-Event": {
     min: 150,
     max: 100000
   }
@@ -19,9 +19,10 @@ const BOOKINGS_PRICE_BREAKDOWN = {
 function BookingChart(props) {
   const chartData = { labels: [], datasets: [] };
   let values = [];
+  // eslint-disable-next-line no-unused-vars
   for (let bucket in BOOKINGS_PRICE_BREAKDOWN) {
     const filteredBookingsCount = props.bookings.reduce((acc, current) => {
-      console.log(current);
+      // console.log(current);
       if (
         current.event.price > BOOKINGS_PRICE_BREAKDOWN[bucket].min &&
         current.event.price < BOOKINGS_PRICE_BREAKDOWN[bucket].max
@@ -37,8 +38,8 @@ function BookingChart(props) {
       backgroundColor: "rgba(255,99,132,0.2)",
       borderColor: "rgba(255,99,132,1)",
       borderWidth: 1,
-      hoverBackgroundColor: "rgba(255,99,132,0.4)",
-      hoverBorderColor: "rgba(255,99,132,1)",
+      hoverBackgroundColor: "rgba(245, 87, 140, 0.8)",
+      hoverBorderColor: "rgb(245, 87, 140)",
       data: values
     });
     values = [...values];
@@ -46,13 +47,16 @@ function BookingChart(props) {
   }
 
   return (
-    <div style={{ width: "75%", margin: "10rem auto" }}>
+    <div style={{ width: "75%", margin: "7rem auto" }}>
       <Bar
         data={chartData}
-        width={50}
-        height={100}
+        width={100}
+        height={200}
         options={{
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          legend: {
+            display: false
+          }
         }}
       />
     </div>
