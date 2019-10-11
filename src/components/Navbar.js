@@ -8,19 +8,23 @@ function Navbar() {
   return (
     <header className="main-navigation">
       <div className="main-navigation__logo">
-        <h2>EzEvents</h2>
+        <NavLink to="/">
+          <h2>EzEvents</h2>
+        </NavLink>
       </div>
       <nav className="main-navigation__items">
         <ul>
-          {!context.token && (
+          {!context.token ? (
             <li>
               <NavLink to="/auth">LogIn</NavLink>
             </li>
+          ) : (
+            ""
           )}
           <li>
             <NavLink to="/events">Events</NavLink>
           </li>
-          {context.token && (
+          {context.token ? (
             <Fragment>
               <li>
                 <NavLink to="/bookings">Bookings</NavLink>
@@ -29,6 +33,8 @@ function Navbar() {
                 <button onClick={context.logout}>Logout</button>
               </li>
             </Fragment>
+          ) : (
+            ""
           )}
         </ul>
       </nav>
