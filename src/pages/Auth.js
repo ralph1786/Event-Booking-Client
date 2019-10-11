@@ -92,6 +92,7 @@ function Auth(props) {
             type="email"
             id="email"
             onChange={e => setEmail(e.target.value)}
+            autoFocus
           />
         </div>
         <div className="form-control">
