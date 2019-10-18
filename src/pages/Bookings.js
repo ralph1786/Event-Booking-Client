@@ -31,7 +31,6 @@ function Bookings() {
         setIsLoading(false);
         const listOfBookings = data.data.data.bookings;
         setBookings(listOfBookings);
-        // console.log(data);
       })
       .catch(err => {
         console.log(err);
