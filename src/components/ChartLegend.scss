@@ -1,0 +1,21 @@
+@import "../utilities/variables.scss";
+
+.price-range {
+  margin: 0 auto;
+  border-radius: 25px;
+  padding: 1rem;
+  max-width: 25%;
+  -webkit-box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
+  -moz-box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
+  box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
+  box-sizing: border-box;
+  text-align: center;
+
+  p {
+    font-size: 1.1rem;
+    span {
+      color: darken($color: $primary-color, $amount: 30);
+      margin-left: 10px;
+    }
+  }
+}
