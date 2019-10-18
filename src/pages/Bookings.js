@@ -5,6 +5,7 @@ import Spinner from "../components/UX/Spinner";
 import BookingList from "../containers/BookingList";
 import BookingChart from "../containers/BookingChart";
 import BookingTabs from "../components/BookingTabs";
+import ChartLegend from "../components/ChartLegend";
 import { GET_BOOKINGS } from "../graphql/queries/index";
 import { CANCEL_BOOKING } from "../graphql/mutations/index";
 
@@ -82,13 +83,15 @@ function Bookings() {
             Currently you have not booked an event.
           </h2>
         ) : null}
-        <div>
-          {output === "List" ? (
-            <BookingList bookings={bookings} cancelBooking={cancelBooking} />
-          ) : (
+
+        {output === "List" ? (
+          <BookingList bookings={bookings} cancelBooking={cancelBooking} />
+        ) : (
+          <Fragment>
             <BookingChart bookings={bookings} />
-          )}
-        </div>
+            <ChartLegend />
+          </Fragment>
+        )}
       </Fragment>
     );
   }
