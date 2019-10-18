@@ -3,7 +3,6 @@ import "./BookingCard.scss";
 
 function BookingCard(props) {
   const { booking } = props;
-  console.log(booking);
   return (
     <li className="bookings__item">
       <div>
