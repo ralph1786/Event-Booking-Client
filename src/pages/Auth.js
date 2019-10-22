@@ -5,6 +5,7 @@ import "./Auth.scss";
 import AuthContext from "../context/auth-context";
 import { LOGIN_USER } from "../graphql/queries/index";
 import { CREATE_USER } from "../graphql/mutations/index";
+import Message from "../components/UX/Message";
 
 function Auth(props) {
   const [email, setEmail] = useState("");
@@ -75,15 +76,7 @@ function Auth(props) {
 
   return (
     <Fragment>
-      {message ? (
-        <span
-          className={
-            messageType === "success" ? "success_message" : "error_message"
-          }
-        >
-          {message}
-        </span>
-      ) : null}
+      {message ? <Message message={message} messageType={messageType} /> : null}
       <form className="auth-form" onSubmit={submitHandler}>
         <div className="form-control">
           <label htmlFor="email">Email</label>
