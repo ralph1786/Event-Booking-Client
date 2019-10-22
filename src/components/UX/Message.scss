@@ -1,0 +1,10 @@
+@import "../../utilities/_mixins";
+
+.error_message {
+  @include message;
+}
+
+.success_message {
+  @include message;
+  background: rgb(55, 206, 55);
+}
