@@ -16,6 +16,7 @@ import WelcomePage from "./components/WelcomePage";
 function App() {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const login = (token, userId, tokenExpiration) => {
     setToken(token);
@@ -30,6 +31,11 @@ function App() {
     localStorage.clear();
   };
 
+  const searchTermHandler = eventTitle => {
+    // console.log(eventTitle);
+    setSearchTerm(eventTitle);
+  };
+
   useEffect(() => {
     setToken(localStorage.getItem("token"));
     setUserId(localStorage.getItem("userId"));
@@ -39,9 +45,15 @@ function App() {
     <Router>
       <Fragment>
         <AuthContext.Provider
-          value={{ token: token, userId: userId, login: login, logout: logout }}
+          value={{
+            token: token,
+            userId: userId,
+            login: login,
+            logout: logout,
+            searchTerm: searchTerm
+          }}
         >
-          <Navbar />
+          <Navbar searchTermHandler={searchTermHandler} />
           <main className="main-content">
             <Switch>
               <Route
