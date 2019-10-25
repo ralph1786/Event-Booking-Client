@@ -1,5 +1,6 @@
 .bookings__list {
-  width: 40rem;
+  display: grid;
   max-width: 90%;
   margin: 2rem auto;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 450px));
 }
