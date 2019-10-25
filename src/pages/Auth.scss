@@ -4,15 +4,15 @@
 @keyframes FadeIn {
   0% {
     opacity: 0;
-    transform: translateY(-15%);
+    transform: translateY(-9%);
   }
   25% {
     opacity: 0.25;
-    transform: translateY(-10%);
+    transform: translateY(-6%);
   }
   50% {
     opacity: 0.5;
-    transform: translateY(-5%);
+    transform: translateY(-3%);
   }
   75% {
     opacity: 0.75;
@@ -33,7 +33,7 @@
   -moz-box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
   box-shadow: 3px 9px 50px -15px rgba(26, 25, 25, 0.75);
   background-color: lighten($color: $primary-color, $amount: 31);
-  animation: FadeIn 1.5s ease-in;
+  animation: FadeIn 1.3s ease-in;
 
   .form-control {
     margin-bottom: 1rem;
