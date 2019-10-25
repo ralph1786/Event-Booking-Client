@@ -1,10 +1,29 @@
 @import "../../utilities/_mixins";
 
+@mixin closeButton {
+  background: transparent;
+  border: none;
+  color: white;
+  margin-left: 30%;
+  font-size: 1.1rem;
+  cursor: pointer;
+
+  &:hover {
+    color: darken($color: white, $amount: 10);
+  }
+}
+
 .error_message {
   @include message;
+  button {
+    @include closeButton;
+  }
 }
 
 .success_message {
   @include message;
   background: rgb(55, 206, 55);
+  button {
+    @include closeButton;
+  }
 }
