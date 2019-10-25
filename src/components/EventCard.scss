@@ -1,8 +1,20 @@
 @import "../utilities/_variables.scss";
 @import "../utilities/_mixins.scss";
 
+@keyframes FadeInEvents {
+  from {
+    opacity: 0;
+    transform: translateY(5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .event__list__item {
   @include card;
+  animation: FadeInEvents 0.8s ease-in;
 
   h2 {
     margin: 0;
@@ -43,3 +55,9 @@
     margin: 0;
   }
 }
+
+// @for $x from 1 through 20 {
+//   .event__list__item:nth-child(#{$x}) {
+//     animation-delay: $x * 0.1s;
+//   }
+// }
