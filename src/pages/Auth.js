@@ -74,9 +74,19 @@ function Auth(props) {
     setLoginMode(!loginMode);
   };
 
+  const closeMessage = () => {
+    setMessage("");
+  };
+
   return (
     <Fragment>
-      {message ? <Message message={message} messageType={messageType} /> : null}
+      {message ? (
+        <Message
+          message={message}
+          messageType={messageType}
+          closeMessage={closeMessage}
+        />
+      ) : null}
       <form className="auth-form" onSubmit={submitHandler}>
         <div className="form-control">
           <label htmlFor="email">Email</label>
@@ -86,6 +96,7 @@ function Auth(props) {
             id="email"
             onChange={e => setEmail(e.target.value)}
             autoFocus
+            required
           />
         </div>
         <div className="form-control">
@@ -95,6 +106,7 @@ function Auth(props) {
             type="password"
             id="password"
             onChange={e => setPassword(e.target.value)}
+            required
           />
         </div>
         <div className="form-actions">
