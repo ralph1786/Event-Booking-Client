@@ -9,9 +9,10 @@ function SearchBar({ searchTermHandler }) {
       <input
         value={context.searchTerm}
         onChange={e => searchTermHandler(e.target.value)}
-        type="text"
+        type="search"
         id="search_bar"
         placeholder="search"
+        role="search"
       />
       <span>
         <i className="fas fa-search fa-lg" />
