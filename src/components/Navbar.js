@@ -1,9 +1,10 @@
 import React, { useContext, Fragment } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import "./Navbar.scss";
 import AuthContext from "../context/auth-context";
+import SearchBar from "./SearchBar";
 
-function Navbar() {
+function Navbar(props) {
   const context = useContext(AuthContext);
   return (
     <header className="main-navigation">
@@ -15,11 +16,25 @@ function Navbar() {
       <nav className="main-navigation__items">
         <ul>
           {!context.token ? (
-            <li>
-              <NavLink to="/auth">LogIn</NavLink>
-            </li>
+            <Fragment>
+              <li>
+                {props.location.pathname === "/events" && (
+                  <SearchBar searchTermHandler={props.searchTermHandler} />
+                )}
+              </li>
+              <li>
+                <NavLink to="/auth">LogIn</NavLink>
+              </li>
+            </Fragment>
           ) : (
             ""
+          )}
+          {context.token && (
+            <li>
+              {props.location.pathname === "/events" && (
+                <SearchBar searchTermHandler={props.searchTermHandler} />
+              )}
+            </li>
           )}
           <li>
             <NavLink to="/events">Events</NavLink>
@@ -42,4 +57,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default withRouter(Navbar);
