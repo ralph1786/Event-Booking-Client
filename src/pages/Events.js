@@ -163,10 +163,18 @@ function Events() {
     }
   };
 
+  const closeMessage = () => {
+    setErrorMessage("");
+  };
+
   return (
     <Fragment>
       {(isModalOpen || selectedEvent) && (
-        <Backdrop closeModal={closeModal} errorMessage={errorMessage} />
+        <Backdrop
+          closeModal={closeModal}
+          errorMessage={errorMessage}
+          closeMessage={closeMessage}
+        />
       )}
       {isModalOpen && (
         <Modal
