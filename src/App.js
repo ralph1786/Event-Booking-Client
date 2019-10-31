@@ -12,11 +12,14 @@ import EventsPage from "./pages/Events";
 import Navbar from "./components/Navbar";
 import AuthContext from "./context/auth-context";
 import WelcomePage from "./components/WelcomePage";
+import SideDrawer from "./containers/SideDrawer";
+import BackDrop from "./components/Backdrop";
 
 function App() {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sideDrawer, setSideDrawer] = useState(false);
 
   const login = (token, userId, tokenExpiration) => {
     setToken(token);
@@ -32,8 +35,11 @@ function App() {
   };
 
   const searchTermHandler = eventTitle => {
-    // console.log(eventTitle);
     setSearchTerm(eventTitle);
+  };
+
+  const toggleSideDrawer = () => {
+    setSideDrawer(!sideDrawer);
   };
 
   useEffect(() => {
@@ -53,7 +59,15 @@ function App() {
             searchTerm: searchTerm
           }}
         >
-          <Navbar searchTermHandler={searchTermHandler} />
+          {sideDrawer && <BackDrop closeModal={toggleSideDrawer} />}
+          <Navbar
+            searchTermHandler={searchTermHandler}
+            toggleSideDrawer={toggleSideDrawer}
+          />
+          <SideDrawer
+            isDrawerOpen={sideDrawer}
+            searchTermHandler={searchTermHandler}
+          />
           <main className="main-content">
             <Switch>
               <Route
