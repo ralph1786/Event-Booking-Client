@@ -12,9 +12,7 @@ function BookingCard(props) {
         <p>{booking.event.description}</p>
       </div>
       <div>
-        <button onClick={() => props.cancelBooking(booking._id)}>
-          Cancel Booking
-        </button>
+        <button onClick={() => props.cancelBooking(booking._id)}>Cancel</button>
       </div>
     </li>
   );
