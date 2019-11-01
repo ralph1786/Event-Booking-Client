@@ -1,11 +1,48 @@
 @import "../utilities/variables.scss";
 
 .event__list {
-  // max-width: 90%;
   margin-left: 5rem;
   padding: 0;
   ul {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 450px));
+  }
+}
+
+@media (max-width: 1024px) {
+  .event__list {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .event__list {
+    margin-left: 0;
+
+    ul {
+      padding-left: 0;
+      display: flex;
+      justify-content: space-evenly;
+    }
+  }
+}
+
+@media (max-width: 414px) {
+  .event__list {
+    ul {
+      justify-content: space-evenly;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .event__list {
+    margin: 0 auto;
+    padding: 0;
+    ul {
+      width: 300px;
+      display: block;
+    }
   }
 }
