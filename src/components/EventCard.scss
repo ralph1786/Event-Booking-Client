@@ -28,8 +28,8 @@
   }
 
   img {
-    width: 300px;
-    height: 275px;
+    width: 275px;
+    height: 250px;
   }
 
   button {
@@ -56,8 +56,80 @@
   }
 }
 
-// @for $x from 1 through 20 {
-//   .event__list__item:nth-child(#{$x}) {
-//     animation-delay: $x * 0.1s;
-//   }
-// }
+@media (max-width: 768px) {
+  .event__list__item {
+    @include card;
+    width: 300px;
+    img {
+      width: 200px;
+      height: 175px;
+    }
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    button {
+      top: 7.5rem;
+    }
+
+    .button__delete {
+      top: 7.5rem;
+    }
+  }
+}
+
+@media (max-width: 414px) {
+  .event__list__item {
+    @include card;
+    width: 150px;
+    height: 225px;
+    img {
+      width: 125px;
+      height: 100px;
+    }
+    h2 {
+      font-size: 0.8rem;
+    }
+
+    h4 {
+      margin: 0.5rem;
+      font-size: 0.7rem;
+    }
+
+    button {
+      top: 6rem;
+      right: 5.5rem;
+      padding: 0.1rem 0.3rem;
+      font-size: 0.6rem;
+    }
+
+    .button__delete {
+      top: 5rem;
+      padding: 0.1rem 0.3rem;
+      font-size: 0.7rem;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .event__list__item {
+    @include card;
+    width: 255px;
+    img {
+      width: 175px;
+      height: 145px;
+    }
+    button {
+      top: 6rem;
+      right: 0.5rem;
+      padding: 0.1rem 0.3rem;
+      font-size: 0.6rem;
+    }
+
+    .button__delete {
+      top: 6rem;
+      padding: 0.1rem 0.3rem;
+      font-size: 0.7rem;
+    }
+  }
+}
