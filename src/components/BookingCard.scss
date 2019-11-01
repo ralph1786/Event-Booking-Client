@@ -13,6 +13,51 @@
 
   img {
     width: 200px;
-    height: 200px;
+    height: 175px;
+  }
+}
+
+@media (max-width: 768px) {
+  .bookings__item {
+    width: 300px;
+    img {
+      width: 200px;
+      height: 175px;
+    }
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    button {
+      top: 8.5rem;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+@media (max-width: 414px) {
+  .event__list__item {
+    @include card;
+    width: 150px;
+    height: 225px;
+    img {
+      width: 125px;
+      height: 100px;
+    }
+    h2 {
+      font-size: 0.8rem;
+    }
+
+    h4 {
+      margin: 0.5rem;
+      font-size: 0.7rem;
+    }
+
+    button {
+      top: 6rem;
+      right: 5.5rem;
+      padding: 0.1rem 0.3rem;
+      font-size: 0.6rem;
+    }
   }
 }
