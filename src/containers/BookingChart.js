@@ -47,7 +47,7 @@ function BookingChart(props) {
   }
 
   return (
-    <div style={{ width: "75%", margin: "7rem auto" }}>
+    <div style={{ width: "75%", margin: "6rem auto" }}>
       <Bar
         data={chartData}
         width={100}
