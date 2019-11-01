@@ -19,3 +19,18 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .price-range {
+    min-width: 75%;
+  }
+}
+
+@media (max-width: 414px) {
+  .price-range {
+    min-width: 100%;
+    p {
+      font-size: 1rem;
+    }
+  }
+}
