@@ -57,4 +57,24 @@
       color: rgb(189, 187, 187);
     }
   }
+
+  .fa-ellipsis-h {
+    color: white;
+  }
+}
+
+@media (min-width: 415px) {
+  .fa-ellipsis-h {
+    display: none;
+  }
+}
+
+@media (max-width: 414px) {
+  .main-navigation {
+    &__items {
+      ul {
+        display: none;
+      }
+    }
+  }
 }
