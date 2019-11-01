@@ -1,11 +1,9 @@
-import React, { useContext, Fragment } from "react";
-import { NavLink, withRouter } from "react-router-dom";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import NavbarMenu from "./NavbarMenu";
 import "./Navbar.scss";
-import AuthContext from "../context/auth-context";
-import SearchBar from "./SearchBar";
 
-function Navbar(props) {
-  const context = useContext(AuthContext);
+function Navbar({ searchTermHandler, toggleSideDrawer }) {
   return (
     <header className="main-navigation">
       <div className="main-navigation__logo">
@@ -14,47 +12,14 @@ function Navbar(props) {
         </NavLink>
       </div>
       <nav className="main-navigation__items">
-        <ul>
-          {!context.token ? (
-            <Fragment>
-              <li>
-                {props.location.pathname === "/events" && (
-                  <SearchBar searchTermHandler={props.searchTermHandler} />
-                )}
-              </li>
-              <li>
-                <NavLink to="/auth">LogIn</NavLink>
-              </li>
-            </Fragment>
-          ) : (
-            ""
-          )}
-          {context.token && (
-            <li>
-              {props.location.pathname === "/events" && (
-                <SearchBar searchTermHandler={props.searchTermHandler} />
-              )}
-            </li>
-          )}
-          <li>
-            <NavLink to="/events">Events</NavLink>
-          </li>
-          {context.token ? (
-            <Fragment>
-              <li>
-                <NavLink to="/bookings">Bookings</NavLink>
-              </li>
-              <li>
-                <button onClick={context.logout}>Logout</button>
-              </li>
-            </Fragment>
-          ) : (
-            ""
-          )}
-        </ul>
+        <NavbarMenu searchTermHandler={searchTermHandler} />
+        <i
+          onClick={() => toggleSideDrawer()}
+          className="fas fa-ellipsis-h fa-2x"
+        ></i>
       </nav>
     </header>
   );
 }
 
-export default withRouter(Navbar);
+export default Navbar;
