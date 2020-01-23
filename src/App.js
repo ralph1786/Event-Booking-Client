@@ -9,11 +9,11 @@ import "./App.scss";
 import AuthPage from "./pages/Auth";
 import BookingsPage from "./pages/Bookings";
 import EventsPage from "./pages/Events";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/UI/Navigation/Navbar";
 import AuthContext from "./context/auth-context";
-import WelcomePage from "./components/WelcomePage";
+import WelcomePage from "./pages/WelcomePage";
 import SideDrawer from "./containers/SideDrawer";
-import BackDrop from "./components/Backdrop";
+import BackDrop from "./components/UX/Backdrop";
 
 function App() {
   const [token, setToken] = useState(null);
