@@ -12,7 +12,7 @@ function Modal(props) {
         {props.canConfirm && localStorage.getItem("token") ? (
           <button onClick={props.onConfirm}>{props.confirmText}</button>
         ) : null}
-        {props.canCancel && <button onClick={props.onCancel}>Cancel</button>}
+        {props.canCancel && <button onClick={props.onCancel}>Close</button>}
       </section>
     </div>
   );

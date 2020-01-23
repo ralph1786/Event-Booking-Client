@@ -1,7 +1,7 @@
 import React, { useContext, Fragment } from "react";
 import { NavLink, withRouter } from "react-router-dom";
-import AuthContext from "../context/auth-context";
-import SearchBar from "./SearchBar";
+import AuthContext from "../../../context/auth-context";
+import SearchBar from "../SearchBar";
 
 function NavbarMenu(props) {
   const context = useContext(AuthContext);

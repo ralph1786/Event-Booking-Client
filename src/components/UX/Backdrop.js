@@ -1,5 +1,5 @@
 import React from "react";
-import Message from "./UX/Message";
+import Message from "./Message";
 import "./Backdrop.scss";
 
 function Backdrop({ closeModal, errorMessage, closeMessage }) {

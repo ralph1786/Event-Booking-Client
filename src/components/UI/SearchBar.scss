@@ -7,11 +7,11 @@
   }
   span {
     position: relative;
-    top: 1px;
+    top: 0.25px;
     right: 90%;
 
     .fa-search {
-      transform: rotate(90deg);
+      // transform: rotate(90deg);
       font-size: 16px;
     }
   }
