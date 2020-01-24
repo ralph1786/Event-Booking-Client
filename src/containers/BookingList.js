@@ -1,5 +1,5 @@
 import React from "react";
-import BookingCard from "../components/BookingCard";
+import BookingCard from "../components/Cards/BookingCard";
 import "./BookingList.scss";
 
 function BookingList(props) {
