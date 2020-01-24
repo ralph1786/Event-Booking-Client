@@ -4,8 +4,8 @@ import AuthContext from "../context/auth-context";
 import Spinner from "../components/UX/Spinner";
 import BookingList from "../containers/BookingList";
 import BookingChart from "../containers/BookingChart";
-import BookingTabs from "../components/BookingTabs";
-import ChartLegend from "../components/ChartLegend";
+import BookingTabs from "../components/UI/BookingTabs";
+import ChartLegend from "../components/UX/ChartLegend";
 import { GET_BOOKINGS } from "../graphql/queries/index";
 import { CANCEL_BOOKING } from "../graphql/mutations/index";
 
