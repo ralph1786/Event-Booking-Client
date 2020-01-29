@@ -1,46 +1,53 @@
-import React, {
-  Fragment,
-  useState,
-  useRef,
-  useContext,
-  useEffect
-} from "react";
+import React, { Fragment, useState, useContext, useEffect } from "react";
 import "./Events.scss";
-import Modal from "../components/Modal";
-import Backdrop from "../components/Backdrop";
-import EventList from "../containers/EventList";
+import Modal from "../components/UI/Modal";
+import Backdrop from "../components/UX/Backdrop";
+import EventList from "../containers/Events/EventList";
+import CreateEventForm from "../components/UI/Forms/CreateEventForm";
+import EventDetails from "../components/UI/EventDetails";
 import axios from "axios";
 import AuthContext from "../context/auth-context";
 import Spinner from "../components/UX/Spinner";
-import { GET_ALL_EVENTS } from "../graphql/queries/index";
+import CreateEventSection from "../containers/Events/CreateEventSection";
+import { inputValidation } from "../Validations/inputValidation";
 import {
-  CREATE_EVENT,
-  BOOK_EVENT,
-  DELETE_EVENT
-} from "../graphql/mutations/index";
+  deleteEventHelper,
+  createEventHelper,
+  bookEventHelper
+} from "../helpers/httpRequests";
+import { GET_ALL_EVENTS } from "../graphql/queries/index";
 
 function Events() {
   //state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [events, setEvents] = useState([]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [pastEvents, setPastEvents] = useState([]);
 
-  //refs
-  const titleRef = useRef("");
-  const priceRef = useRef(0);
-  const posterRef = useRef("");
-  const dateRef = useRef("");
-  const descriptionRef = useRef("");
+  //state form
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState(0);
+  const [poster, setPoster] = useState("");
+  const [date, setDate] = useState("");
+  const [description, setDescription] = useState("");
 
   //context
   const context = useContext(AuthContext);
+
+  const url = "http://localhost:4000/graphql";
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedEvent(null);
     setErrorMessage("");
+    setTitle("");
+    setPrice(0);
+    setPoster("");
+    setDate("");
+    setDescription("");
   };
 
   const fetchEvents = () => {
@@ -50,11 +57,28 @@ function Events() {
     };
 
     axios
-      .post("http://localhost:4000/graphql", requestBody)
+      .post(url, requestBody)
       .then(data => {
         setIsLoading(false);
         const listOfEvents = data.data.data.events;
         setEvents(listOfEvents);
+        let currentYear = new Date().getFullYear();
+        let currentMonth = new Date().getMonth();
+        let currentDay = new Date().getDate();
+        // eslint-disable-next-line no-unused-vars
+        for (let event of listOfEvents) {
+          let eventDate = event.date.split("/");
+          let eventMonth = parseInt(eventDate[0]);
+          let eventDay = parseInt(eventDate[1]);
+          let eventYear = parseInt(eventDate[2]);
+          if (currentYear > eventYear || currentMonth > eventMonth) {
+            if (currentDay > eventDay) {
+              setPastEvents(prevState => [...prevState, event]);
+            }
+          } else {
+            setUpcomingEvents(prevState => [...prevState, event]);
+          }
+        }
       })
       .catch(err => {
         console.log(err);
@@ -67,43 +91,16 @@ function Events() {
   }, []);
 
   const createEvent = () => {
-    const title = titleRef.current.value;
-    const poster = posterRef.current.value;
-    const price = +priceRef.current.value; //the + sign turns it into a number
-    const date = dateRef.current.value;
-    const description = descriptionRef.current.value;
-
-    if (
-      title.trim().length === 0 ||
-      poster.trim().length === 0 ||
-      price <= 0 ||
-      date.trim().length === 0 ||
-      description.trim().length === 0
-    ) {
+    if (inputValidation(title, poster, price, date, description)) {
       setErrorMessage("All Fields Required!");
       return;
     }
     setIsModalOpen(false);
-    const requestBody = {
-      query: CREATE_EVENT,
-      variables: {
-        title: title,
-        description: description,
-        poster: poster,
-        price: price,
-        date: date
-      }
-    };
-
-    axios
-      .post("http://localhost:4000/graphql", requestBody, {
-        headers: {
-          Authorization: `Bearer ${context.token}`
-        }
-      })
+    let token = context.token;
+    createEventHelper(title, description, poster, price, date, token)
       .then(data => {
         const createdEvent = data.data.data.createEvent;
-        setEvents([...events, createdEvent]);
+        setUpcomingEvents([...upcomingEvents, createdEvent]);
       })
       .catch(err => console.log(err));
   };
@@ -119,20 +116,10 @@ function Events() {
       return;
     }
     setIsLoading(true);
-    const requestBody = {
-      query: BOOK_EVENT,
-      variables: {
-        id: selectedEvent._id
-      }
-    };
-
-    axios
-      .post("http://localhost:4000/graphql", requestBody, {
-        headers: {
-          Authorization: `Bearer ${context.token}`
-        }
-      })
-      .then(data => {
+    let selectedEventId = selectedEvent._id;
+    let token = context.token;
+    bookEventHelper(selectedEventId, token)
+      .then(() => {
         setIsLoading(false);
         setSelectedEvent(null);
       })
@@ -142,25 +129,20 @@ function Events() {
       });
   };
 
-  const deleteEvent = async eventId => {
-    const requestBody = {
-      query: DELETE_EVENT,
-      variables: {
-        id: eventId
-      }
-    };
-
-    try {
-      await axios.post("http://localhost:4000/graphql", requestBody, {
-        headers: {
-          Authorization: `Bearer ${context.token}`
-        }
-      });
-      const filteredEvents = events.filter(event => event._id !== eventId);
-      setEvents(filteredEvents);
-    } catch (error) {
-      console.log(error);
+  const deleteEvent = eventId => {
+    if (!window.confirm("Sure you want to delete this event?")) {
+      return;
     }
+    let token = context.token;
+    deleteEventHelper(eventId, token);
+    const upcomingFilteredEvents = upcomingEvents.filter(
+      event => event._id !== eventId
+    );
+    const pastFilteredEvents = pastEvents.filter(
+      event => event._id !== eventId
+    );
+    setUpcomingEvents(upcomingFilteredEvents);
+    setPastEvents(pastFilteredEvents);
   };
 
   const closeMessage = () => {
@@ -185,33 +167,18 @@ function Events() {
           onConfirm={createEvent}
           confirmText="Create"
         >
-          <form>
-            <div className="form-control">
-              <label htmlFor="title">Title</label>
-              <input type="text" id="title" ref={titleRef} autoFocus />
-            </div>
-            <div className="form-control">
-              <label htmlFor="price">Price</label>
-              <input type="number" id="price" ref={priceRef} />
-            </div>
-            <div className="form-control">
-              <label htmlFor="poster">Poster</label>
-              <input type="text" id="poster" ref={posterRef} />
-            </div>
-            <div className="form-control">
-              <label htmlFor="date">Date</label>
-              <input type="datetime-local" id="date" ref={dateRef} />
-            </div>
-            <div className="form-control">
-              <label htmlFor="description">Description</label>
-              <textarea
-                id="description"
-                cols="25"
-                rows="7"
-                ref={descriptionRef}
-              ></textarea>
-            </div>
-          </form>
+          <CreateEventForm
+            title={title}
+            price={price}
+            poster={poster}
+            date={date}
+            description={description}
+            setTitle={setTitle}
+            setPrice={setPrice}
+            setPoster={setPoster}
+            setDate={setDate}
+            setDescription={setDescription}
+          />
         </Modal>
       )}
       {selectedEvent && (
@@ -223,29 +190,19 @@ function Events() {
           onConfirm={bookEvent}
           confirmText="Book"
         >
-          <h2>{selectedEvent.title}</h2>
-          <h4>Price: ${selectedEvent.price}</h4>
-          <h4>Date: {new Date(selectedEvent.date).toLocaleDateString()}</h4>
-          <p>{selectedEvent.description}</p>
+          <EventDetails selectedEvent={selectedEvent} />
         </Modal>
       )}
 
       {context.token && (
-        <div className="create-event">
-          <h2>Add new events to our platform!</h2>
-          <button
-            className="create-event__btn"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Create Event
-          </button>
-        </div>
+        <CreateEventSection setIsModalOpen={() => setIsModalOpen(true)} />
       )}
       {isLoading ? (
         <Spinner />
       ) : (
         <EventList
-          events={events}
+          upcomingEvents={upcomingEvents}
+          pastEvents={pastEvents}
           authUserId={context.userId}
           onViewDetail={showEventDetails}
           deleteEvent={deleteEvent}
