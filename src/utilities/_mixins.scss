@@ -1,10 +1,10 @@
 @mixin card {
   box-sizing: border-box;
-  margin: 1rem 0;
+  // margin: 1rem 0;
+  margin: 0.8rem;
   padding: 1rem;
   list-style: none;
   width: 375px;
-  // min-height: 400px;
   max-height: 350px;
   min-height: 325px;
   display: flex;
