@@ -58,6 +58,12 @@
   }
 }
 
+@media (min-width: 1440px) {
+  .event__list__item {
+    min-width: 350px;
+  }
+}
+
 @media (max-width: 768px) {
   .event__list__item {
     @include card;
@@ -83,7 +89,7 @@
 @media (max-width: 414px) {
   .event__list__item {
     @include card;
-    width: 150px;
+    width: 250px;
     height: 225px;
     img {
       width: 125px;
@@ -99,16 +105,18 @@
     }
 
     button {
-      top: 6rem;
-      right: 5.5rem;
+      // top: 6rem;
+      // right: 5.5rem;
       padding: 0.1rem 0.3rem;
       font-size: 0.6rem;
+      left: 1rem;
     }
 
     .button__delete {
-      top: 5rem;
+      // top: 5rem;
       padding: 0.1rem 0.3rem;
       font-size: 0.7rem;
+      left: 1rem;
     }
   }
 }
