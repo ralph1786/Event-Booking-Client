@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from "react";
-import EventCard from "../../components/Cards/EventCard";
+import EventCard from "../../components/UI/Cards/EventCard";
 import AuthContext from "../../context/auth-context";
 
 function UpcomingEvents(props) {

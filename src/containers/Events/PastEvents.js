@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from "react";
 import AuthContext from "../../context/auth-context";
-import EventCard from "../../components/Cards/EventCard";
+import EventCard from "../../components/UI/Cards/EventCard";
 
 function PastEvents(props) {
   const context = useContext(AuthContext);
