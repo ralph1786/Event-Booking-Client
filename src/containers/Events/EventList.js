@@ -20,7 +20,6 @@ function EventList(props) {
         onViewDetail={onViewDetail}
         deleteEvent={deleteEvent}
       />
-      <hr />
       <PastEvents
         pastEvents={pastEvents}
         authUserId={authUserId}
