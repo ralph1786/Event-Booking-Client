@@ -5,15 +5,18 @@
   padding: 0;
   ul {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 425px));
+    display: flex;
+    // display: grid;
+    // grid-template-columns: repeat(auto-fit, minmax(100px, 425px));
     // grid-template-rows: repeat(auto-fit, minmax(300px, 450px));
-    // grid-template-rows: repeat(4, 1fr);
+    // grid-template-rows: repeat(1, 1fr);
   }
   &__upcomingEvents {
     margin-bottom: 1rem;
-    overflow-y: scroll;
-    height: 60vh;
+    overflow-x: scroll;
+    height: 50vh;
+    border: 1px solid black;
+    border-radius: 15px;
   }
 
   h2:first-of-type {
@@ -26,7 +29,9 @@
   }
   &__pastEvents {
     // margin-top: 2rem;
-    overflow-y: scroll;
+    overflow-x: scroll;
+    border: 1px solid black;
+    border-radius: 15px;
   }
 }
 
@@ -43,7 +48,7 @@
     ul {
       padding-left: 0;
       display: flex;
-      justify-content: space-evenly;
+      // justify-content: space-evenly;
     }
   }
 }
@@ -51,7 +56,14 @@
 @media (max-width: 414px) {
   .event__list {
     ul {
-      justify-content: space-evenly;
+      display: block;
+    }
+    &__upcomingEvents {
+      overflow-y: scroll;
+    }
+
+    &__pastEvents {
+      overflow-y: scroll;
     }
   }
 }
